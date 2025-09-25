@@ -3,11 +3,21 @@ function renderStats(stats) {
   statsContainer.innerHTML = ''; // Clear previous stats
 
   // Helper to create a section
-  function createSection(title, content) {
+  function createSection(title, content, collapsible = false) {
     if (!content) return;
     const section = document.createElement('div');
     section.className = 'stats-section';
-    section.innerHTML = `<h2>${title}</h2><div class="content">${content}</div>`;
+
+    if (collapsible) {
+      section.innerHTML = `
+        <details>
+          <summary><h2>${title}</h2></summary>
+          <div class="content">${content}</div>
+        </details>
+      `;
+    } else {
+      section.innerHTML = `<h2>${title}</h2><div class="content">${content}</div>`;
+    }
     statsContainer.appendChild(section);
   }
 
@@ -30,7 +40,7 @@ function renderStats(stats) {
       colorsContent += `<li><span class="color-swatch" style="background-color:${color};"></span> ${color}</li>`;
     });
     colorsContent += '</ul>';
-    createSection('Theme Colors', colorsContent);
+    createSection('Theme Colors', colorsContent, true);
   }
   
   // Edit Links
@@ -62,7 +72,7 @@ function renderStats(stats) {
       loadTimesContent += `<li><strong>${speedName}:</strong> ${stats.estimatedTimes[speedName]} s</li>`;
     }
     loadTimesContent += '</ul>';
-    createSection('Est. Load Times', loadTimesContent);
+    createSection('Est. Load Times', loadTimesContent, true);
   }
 
   // Detected Services
@@ -82,7 +92,7 @@ function renderStats(stats) {
       servicesContent += '</li>';
     });
     servicesContent += '</ul>';
-    createSection('Detected Services', servicesContent);
+    createSection('Detected Services', servicesContent, true);
   }
 }
 
