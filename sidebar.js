@@ -31,7 +31,21 @@ function renderStats(stats) {
   `;
   createSection('General', generalContent);
 
-  
+  // Body Classes and ID
+  if (stats.bodyId || (stats.bodyClasses && stats.bodyClasses.length > 0)) {
+    let bodyContent = '';
+    if (stats.bodyId) {
+      bodyContent += `<p><strong>ID:</strong> ${stats.bodyId}</p>`;
+    }
+    if (stats.bodyClasses && stats.bodyClasses.length > 0) {
+      bodyContent += `<strong>Classes:</strong><ul>`;
+      stats.bodyClasses.forEach(cls => {
+        bodyContent += `<li>${cls}</li>`;
+      });
+      bodyContent += '</ul>';
+    }
+    createSection('Body Tag', bodyContent, true);
+  }
 
   // Theme Colors
   if (stats.themeColors && stats.themeColors.length > 0) {
@@ -62,7 +76,7 @@ function renderStats(stats) {
       }
     });
     imagesContent += '</ul>';
-    createSection('Largest Images', imagesContent);
+    createSection('Largest Images', imagesContent, true);
   }
 
   // Estimated Load Times

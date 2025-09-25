@@ -7,8 +7,11 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-const bodyText = document.body.innerText;
+const bodyElement = document.body;
+const bodyText = bodyElement.innerText;
 const wordCount = bodyText.split(/\s+/).length;
+const bodyClasses = Array.from(bodyElement.classList);
+const bodyId = bodyElement.id;
 
 // --- Link Analysis ---
 const allLinks = document.getElementsByTagName('a');
@@ -252,7 +255,9 @@ setTimeout(() => {
     fcp: fcp,
     lcp: lcp,
     cls: cls,
-    detectedServices: finalServices
+    detectedServices: finalServices,
+    bodyClasses: bodyClasses,
+    bodyId: bodyId
   }});
 
 }, 1000); // 1-second delay
