@@ -74,20 +74,43 @@ performance.getEntriesByType('layout-shift').forEach(entry => {
 cls = cls.toFixed(3);
 
 // --- Image Stats Calculation ---
-const images = document.getElementsByTagName('img');
-const imageCount = images.length;
+const allImageUrls = new Set();
 
-const imageDetails = Array.from(images).map(img => {
-    const resource = resourceEntries.find(r => r.name === img.src);
+// 1. Find all `<img>` tags
+Array.from(document.getElementsByTagName('img')).forEach(img => {
+    if (img.src) {
+        allImageUrls.add(new URL(img.src, window.location.href).href);
+    }
+});
+
+// 2. Find all CSS background images
+const elements = document.querySelectorAll('*');
+const urlRegex = /url\("?([^"]+)"?\)/g;
+
+elements.forEach(el => {
+    const style = window.getComputedStyle(el);
+    if (style.backgroundImage && style.backgroundImage !== 'none') {
+        let match;
+        while ((match = urlRegex.exec(style.backgroundImage)) !== null) {
+            allImageUrls.add(new URL(match[1], window.location.href).href);
+        }
+    }
+});
+
+const imageCount = allImageUrls.size;
+
+const imageDetails = Array.from(allImageUrls).map(src => {
+    const resource = resourceEntries.find(r => r.name === src);
+    // Use transferSize for a more accurate representation of download impact
     return {
-        src: img.src,
-        size: resource ? resource.decodedBodySize : 0
+        src: src,
+        size: resource ? resource.transferSize : 0
     };
 }).filter(img => img.size > 0);
 
 imageDetails.sort((a, b) => b.size - a.size);
 
-const topImages = imageDetails.slice(0, 3).map(img => ({
+const topImages = imageDetails.slice(0, 5).map(img => ({
     name: new URL(img.src).pathname.split('/').pop() || 'image',
     sizeMB: (img.size / (1024 * 1024)).toFixed(3),
     src: img.src
