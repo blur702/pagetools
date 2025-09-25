@@ -165,3 +165,51 @@ body {
 .main-content::-webkit-scrollbar-thumb:hover {
   background: #a1a7ad;
 }
+
+/* Styles for collapsible sections */
+.stats-section details {
+  border: none;
+}
+
+.stats-section summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+
+.stats-section summary h2 {
+  padding: 10px 12px;
+  margin: 0;
+  border-bottom: none;
+  width: 100%;
+}
+
+.stats-section details[open] > summary {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stats-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.stats-section summary::before {
+  content: '▶';
+  font-size: 10px;
+  color: var(--text-secondary-color);
+  position: absolute;
+  right: 25px;
+  transform: rotate(0deg);
+  transition: transform 0.2s;
+}
+
+.stats-section details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.stats-section details .content {
+  border-top: none;
+  padding-top: 0;
+}
