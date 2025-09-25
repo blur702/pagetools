@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Page Stats",
+  "version": "1.0",
+  "description": "Displays statistics about the current page.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Open Page Stats Sidebar"
+  },
+  "side_panel": {
+    "default_path": "sidebar.html",
+    "openPanelOnActionClick": true
+  },
+  "icons": {
+    "16": "images/icon.svg",
+    "48": "images/icon.svg",
+    "128": "images/icon.svg"
+  }
+}
